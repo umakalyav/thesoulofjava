@@ -256,6 +256,11 @@
   <script src="assets/js/custom.js"></script>
   <script src="login/js/welcome.js"></script>
 <script>
+  // Fungsi untuk pindah ke halaman login
+  function goLogin() {
+    window.location.href = "login/index.html";
+  }
+
   document.addEventListener("DOMContentLoaded", function() {
     const user = localStorage.getItem("username");
     const info = document.getElementById("userinfo");
@@ -264,9 +269,11 @@
     if (user && info && btn) {
       info.innerText = "Halo, " + user; 
       btn.innerHTML = '<i class="fa fa-sign-out"></i> Logout';
+      // Ubah fungsi tombol jadi logout kalau sudah login
       btn.onclick = function(e) {
         e.preventDefault();
         localStorage.removeItem("username");
+        alert("Logout Berhasil!");
         location.reload();
       };
     }
