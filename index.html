@@ -59,17 +59,19 @@
                         <h1>MUSEA</h1>
                     </a>
                     <ul class="nav">
-                      <li><a href="index.html" class="active">Home</a></li>
-                      <li><a href="properties.html">Portofolio</a></li>
-                      <li><a href="property-details.html">Layanan</a></li>
-                      <li><a href="contact.html">Kontak</a></li>
-                      <li class="nav-item">
-                        <span id="userinfo" style="color: #f35525; font-weight: 600; margin-left: 10px;">Belum login</span>
-                      </li>
-                      <div id="authArea" style="display: inline-block; margin-left: 10px;">
-                        <button onclick="gologin()" class="nav-cta" style="border: none; background: none;"><i class="fa fa-calendar"></i> Login</button>
-                      </div>
-                    </ul>    
+  <li><a href="index.html" class="active">Home</a></li>
+  <li><a href="properties.html">Portofolio</a></li>
+  <li><a href="property-details.html">Layanan</a></li>
+  <li><a href="contact.html">Kontak</a></li>
+  <li class="nav-item">
+    <span id="userinfo" style="color: #f35525; font-weight: 600; margin-left: 10px;">Belum login</span>
+  </li>
+  <div id="authArea" style="display: inline-block; margin-left: 10px;">
+    <button id="authBtn" onclick="goLogin()" class="nav-cta" style="border: none; background: #f35525; color: #fff; padding: 8px 20px; border-radius: 20px;">
+      <i class="fa fa-user"></i> Login
+    </button>
+  </div>
+</ul>    
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
