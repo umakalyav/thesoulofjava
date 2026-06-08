@@ -6,7 +6,6 @@
     <title>Login - Musea Interior</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* CSS Tambahan untuk Alert Box agar tidak hancur */
         #alertBox {
             display: none;
             background-color: #ff3b5c;
@@ -43,18 +42,15 @@
                         <input type="text" id="username" name="username" required placeholder="Username">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="neu-input">
                         <input type="password" id="password" name="password" required placeholder="Password">
                     </div>
                 </div>
-
                 <button type="submit" class="neu-button login-btn">
                     <span>Sign In</span>
                 </button>
             </form>
-
             <div class="signup-link">
                 <p>Don't have an account? <a href="#">Sign up</a></p>
             </div>
@@ -73,24 +69,19 @@
             init() {
                 this.form.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    
                     const username = document.getElementById('username').value.trim();
                     const password = document.getElementById('password').value.trim();
-
                     try {
                         const res = await fetch("https://herisusanta.my.id/javalogin/api/auth.php", {
                             method: "POST",
                             headers: { "Content-Type": "application/x-www-form-urlencoded" },
                             body: `action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
                         });
-
                         const data = await res.json();
-
                         if (data.status === "success") {
                             localStorage.setItem("username", data.username);
-                            alert("Login Berhasil! Selamat datang " + data.username);
-                            // Redirect ke index luar
-                            window.location.href = "../index.html"; 
+                            alert("Login Berhasil!");
+                            window.location.href = "../index.html"; // Balik ke halaman utama
                         } else {
                             this.alertBox.innerText = "Username atau Password salah!";
                             this.alertBox.style.display = "block";
@@ -103,13 +94,6 @@
             }
 
             decorate() {
-                // Efek Hover
-                document.querySelectorAll('.neu-icon, .neu-checkbox, .neu-social').forEach(el => {
-                    el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.05)'; });
-                    el.addEventListener('mouseleave', () => { el.style.transform = 'scale(1)'; });
-                });
-
-                // Animasi bayangan mouse
                 const card = document.querySelector('.login-card');
                 if (card) {
                     document.addEventListener('mousemove', (e) => {
@@ -121,25 +105,7 @@
                 }
             }
         }
-
-        // Jalankan class setelah HTML siap
         document.addEventListener('DOMContentLoaded', () => new NeumorphismLoginForm());
     </script>
-    <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const user = localStorage.getItem("username");
-    const info = document.getElementById("userinfo");
-    const btn = document.getElementById("authBtn");
-
-    if (user) {
-      info.innerText = "Halo, " + user; // Nama kamu muncul di sini
-      btn.innerHTML = '<i class="fa fa-sign-out"></i> Logout';
-      btn.onclick = function() {
-        localStorage.removeItem("username");
-        location.reload();
-      };
-    }
-  });
-</script>
 </body>
 </html>
