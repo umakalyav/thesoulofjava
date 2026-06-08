@@ -4,108 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Musea Interior</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        /* === CSS NEUMORPHISM (TIDAK PERLU FILE style.css LAGI) === */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #e0e5ec; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        
+        .login-card {
+            background: #e0e5ec;
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 20px 20px 60px #bec3cf, -20px -20px 60px #ffffff;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-header h2 { color: #3d4468; margin-bottom: 5px; font-weight: 600; }
+        .login-header p { color: #9499b7; font-size: 14px; margin-bottom: 30px; }
+
+        .neu-input {
+            width: 100%;
+            background: #e0e5ec;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            color: #3d4468;
+            box-shadow: inset 6px 6px 12px #bec3cf, inset -6px -6px 12px #ffffff;
+            outline: none;
+        }
+
+        .neu-button {
+            width: 100%;
+            background: #e0e5ec;
+            border: none;
+            border-radius: 15px;
+            padding: 15px;
+            color: #3d4468;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 6px 6px 12px #bec3cf, -6px -6px 12px #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .neu-button:active {
+            box-shadow: inset 4px 4px 8px #bec3cf, inset -4px -4px 8px #ffffff;
+            transform: scale(0.98);
+        }
+
         #alertBox {
             display: none;
             background-color: #ff3b5c;
             color: white;
             padding: 12px;
             border-radius: 10px;
-            text-align: center;
             margin-bottom: 20px;
-            font-size: 14px;
-            box-shadow: 4px 4px 10px #bec3cf;
+            font-size: 13px;
         }
+
+        .signup-link { margin-top: 25px; font-size: 13px; color: #9499b7; }
+        .signup-link a { color: #3d4468; text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="neu-icon">
-                    <div class="icon-inner">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-                        </svg>
-                    </div>
-                </div>
-                <h2>Welcome back</h2>
-                <p>Musea Museum Specialist</p>
-            </div>
-            
-            <div id="alertBox"></div>
 
-            <form class="login-form" id="loginForm">
-                <div class="form-group">
-                    <div class="neu-input">
-                        <input type="text" id="username" name="username" required placeholder="Username">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="neu-input">
-                        <input type="password" id="password" name="password" required placeholder="Password">
-                    </div>
-                </div>
-                <button type="submit" class="neu-button login-btn">
-                    <span>Sign In</span>
-                </button>
-            </form>
-            <div class="signup-link">
-                <p>Don't have an account? <a href="#">Sign up</a></p>
-            </div>
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Welcome Back</h2>
+            <p>Musea Museum Specialist</p>
+        </div>
+
+        <div id="alertBox"></div>
+
+        <form id="loginForm">
+            <input type="text" id="username" class="neu-input" placeholder="Username" required>
+            <input type="password" id="password" class="neu-input" placeholder="Password" required>
+            <button type="submit" class="neu-button">Sign In</button>
+        </form>
+
+        <div class="signup-link">
+            <p>Don't have an account? <a href="#">Sign up</a></p>
         </div>
     </div>
 
     <script>
-        class NeumorphismLoginForm {
-            constructor() {
-                this.form = document.getElementById('loginForm');
-                this.alertBox = document.getElementById('alertBox');
-                this.init();
-                this.decorate();
-            }
+        // === JAVASCRIPT LOGIC ===
+        document.getElementById("loginForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
 
-            init() {
-                this.form.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const username = document.getElementById('username').value.trim();
-                    const password = document.getElementById('password').value.trim();
-                    try {
-                        const res = await fetch("https://herisusanta.my.id/javalogin/api/auth.php", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                            body: `action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-                        });
-                        const data = await res.json();
-                        if (data.status === "success") {
-                            localStorage.setItem("username", data.username);
-                            alert("Login Berhasil!");
-                            window.location.href = "../index.html"; // Balik ke halaman utama
-                        } else {
-                            this.alertBox.innerText = "Username atau Password salah!";
-                            this.alertBox.style.display = "block";
-                            setTimeout(() => { this.alertBox.style.display = "none"; }, 3000);
-                        }
-                    } catch (error) {
-                        alert("Gagal terhubung ke server!");
-                    }
+            const usernameInput = document.getElementById("username").value.trim();
+            const passwordInput = document.getElementById("password").value.trim();
+            const alertBox = document.getElementById("alertBox");
+
+            try {
+                // Fetch ke API Pak Heri
+                const res = await fetch("https://herisusanta.my.id/javalogin/api/auth.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `action=login&username=${encodeURIComponent(usernameInput)}&password=${encodeURIComponent(passwordInput)}`
                 });
-            }
 
-            decorate() {
-                const card = document.querySelector('.login-card');
-                if (card) {
-                    document.addEventListener('mousemove', (e) => {
-                        const rect = card.getBoundingClientRect();
-                        const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-                        const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-                        card.style.boxShadow = `${x * 15}px ${y * 15}px 30px #bec3cf, ${-x * 15}px ${-y * 15}px 30px #ffffff`;
-                    });
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    // Simpan nama ke memori browser
+                    localStorage.setItem("username", data.username);
+                    alert("Login Berhasil! Selamat datang, " + data.username);
+                    
+                    // Balik ke halaman utama (index.html di folder luar)
+                    window.location.href = "../index.html"; 
+                } else {
+                    // Munculin pesan error kalau gagal
+                    alertBox.innerText = "Username atau Password salah!";
+                    alertBox.style.display = "block";
+                    setTimeout(() => { alertBox.style.display = "none"; }, 3000);
                 }
+            } catch (error) {
+                alert("Gagal terhubung ke server. Pastikan internet nyala!");
             }
-        }
-        document.addEventListener('DOMContentLoaded', () => new NeumorphismLoginForm());
+        });
+
+        // Efek bayangan bergerak (Optional/Hiasan)
+        const card = document.querySelector('.login-card');
+        document.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) / 20;
+            const y = (e.clientY - rect.top - rect.height / 2) / 20;
+            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
     </script>
 </body>
 </html>
