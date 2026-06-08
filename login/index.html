@@ -125,5 +125,21 @@
         // Jalankan class setelah HTML siap
         document.addEventListener('DOMContentLoaded', () => new NeumorphismLoginForm());
     </script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const user = localStorage.getItem("username");
+    const info = document.getElementById("userinfo");
+    const btn = document.getElementById("authBtn");
+
+    if (user) {
+      info.innerText = "Halo, " + user; // Nama kamu muncul di sini
+      btn.innerHTML = '<i class="fa fa-sign-out"></i> Logout';
+      btn.onclick = function() {
+        localStorage.removeItem("username");
+        location.reload();
+      };
+    }
+  });
+</script>
 </body>
 </html>
