@@ -1,36 +1,39 @@
 document.getElementById("loginForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    const res = await fetch("https://herisusanta.my.id/javalogin/api/auth.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-    });
-
-    const data = await res.json();
-
-    if (data.status === "success") {
-        // simpan username
-            localStorage.setItem("username", data.username);
-            window.location.href = "../index.html";
-         
-    // } else {
-    //     document.getElementById("message").innerText = "Username / Password salah";alert("Login gagal");
-    // }
-    
-    } else {
+    const usernameInput = document.getElementById("username").value.trim();
+    const passwordInput = document.getElementById("password").value.trim();
     const alertBox = document.getElementById("alertBox");
-    alertBox.innerText = "Username atau Password salah, silahkan coba lagi";
-    alertBox.style.display = "block";
 
-    setTimeout(() => {
-        alertBox.style.display = "none";
-    }, 3000);
-} 
-   
+    try {
+        const res = await fetch("https://herisusanta.my.id/javalogin/api/auth.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `action=login&username=${encodeURIComponent(usernameInput)}&password=${encodeURIComponent(passwordInput)}`
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+            localStorage.setItem("username", data.username);
+            alert("Login Berhasil! Selamat datang, " + data.username);
+            window.location.href = "../index.html"; 
+        } else {
+            alertBox.innerText = "Username atau Password salah, silakan coba lagi";
+            alertBox.style.display = "block";
+            alertBox.style.backgroundColor = "#ff4d4d";
+            alertBox.style.color = "white";
+            alertBox.style.padding = "10px";
+            alertBox.style.borderRadius = "5px";
+            alertBox.style.marginTop = "10px";
+
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 3000);
+        }
+    } catch (error) {
+        alert("Gagal terhubung ke server.");
+    }
 });
